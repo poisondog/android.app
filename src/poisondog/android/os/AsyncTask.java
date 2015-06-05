@@ -330,6 +330,11 @@ public abstract class AsyncTask<Params, Progress, Result> implements Cancellable
 		};
 	}
 
+	public AsyncTask(PostHandler handler) {
+		this();
+		setHandler(handler);
+	}
+
 	private void postResultIfNotInvoked(Result result) {
 		final boolean wasTaskInvoked = mTaskInvoked.get();
 		if (!wasTaskInvoked) {
