@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import poisondog.android.os.AsyncTask;
+import poisondog.android.view.PhotoView;
 /**
  * @author poisondog <poisondog@gmail.com>
  */
@@ -40,6 +41,14 @@ public abstract class ImageTask {
 	}
 
 	protected abstract Bitmap processBitmap(Object data);
+
+	public void loadImage(PhotoView view) {
+		loadImage(view.getImageUrl(), view);
+	}
+
+	public void loadThumbnail(PhotoView view) {
+		loadImage(view.getThumbnailUrl(), view);
+	}
 
 	public void loadImage(Object data, ImageView imageView) {
 		if (data == null) {
