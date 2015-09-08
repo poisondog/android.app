@@ -27,4 +27,5 @@ dependencies {
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'org.apache.commons:commons-vfs2:2.0'
 	compile project(':poisondog.commons')
+	compile 'se.emilsjolander:stickylistheaders:2.7.0'
 }
