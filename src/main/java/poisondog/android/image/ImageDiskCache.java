@@ -58,6 +58,7 @@ public class ImageDiskCache {
 
 	public synchronized void put(String key, Bitmap value) throws IOException, Exception {
 		IData data = (IData)FileFactory.getFile(getPath(key));
+		data.create();
 		OutputStream output = data.getOutputStream();
 		value.compress(Bitmap.CompressFormat.JPEG, 90, output);
 		output.close();
