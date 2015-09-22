@@ -57,11 +57,14 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 	private Mission<HideInfo> mThumbnailUrlFactory;
 	private Mission<Activity> mWidthCalculator;
 
-	public ImageGroupAdapter(Activity activity, Map<String, List<HideInfo>> files, FileObject cacheFolder) {
+	public ImageGroupAdapter(Activity activity, Map<String, List<HideInfo>> files, String cacheFolder) {
 		super();
 		mActivity = activity;
 		mWidthCalculator = new GetDisplayWidth();
-		mFetcher = new ImageFetcher(activity, 96, 96, cacheFolder);
+		try{
+			mFetcher = new ImageFetcher(activity, 96, 96, cacheFolder);
+		}catch(Exception e) {
+		}
 		mFetcher.setImageCache(new ImageCache(activity, cacheFolder));
 
 		mGroupNames = new ArrayList<String>(files.keySet());

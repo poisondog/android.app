@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 Google Inc.
- * Copyright (C) 2013 Adam Huang
+ * Copyright (C) 2013 Adam Huang <poisondog@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v4.util.LruCache;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
 
 /**
  * @author poisondog <poisondog@gmail.com>
@@ -34,11 +29,9 @@ import org.apache.commons.vfs2.FileSystemException;
 public class ImageCache {
 	private LruCache<String, BitmapDrawable> mMemoryCache;
 	private ImageDiskCache mImageDiskCache;
-//	private final Object mDiskCacheLock = new Object();
-//	private boolean mDiskCacheStarting = true;
 	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
 
-	public ImageCache(Context context, FileObject cacheDirectory) {
+	public ImageCache(Context context, String cacheDirectory) {
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 		final int cacheSize = maxMemory / 4;
 
@@ -59,14 +52,13 @@ public class ImageCache {
 		new InitDiskCacheTask().execute(cacheDirectory);
 	}
 
-	class InitDiskCacheTask extends AsyncTask<FileObject, Void, Void> {
+	class InitDiskCacheTask extends AsyncTask<String, Void, Void> {
 		@Override
-		protected Void doInBackground(FileObject... params) {
-//			synchronized (mDiskCacheLock) {
+		protected Void doInBackground(String... params) {
+			try{
 				mImageDiskCache = ImageDiskCache.open(params[0], DISK_CACHE_SIZE);
-//				mDiskCacheStarting = false; // Finished initialization
-//				mDiskCacheLock.notifyAll(); // Wake any waiting threads
-//			}
+			}catch(Exception e) {
+			}
 			return null;
 		}
 	}
@@ -88,21 +80,13 @@ public class ImageCache {
 		}
 	}
 
-	public void addBitmapToCache(String key, BitmapDrawable bitmap) throws FileSystemException, IOException {
-//		if (getBitmapFromMemCache(key) == null) {
-//			if (RecyclingBitmapDrawable.class.isInstance(bitmap)) {
-//				((RecyclingBitmapDrawable) bitmap).setIsCached(true);
-//			}
-//			new PutMemoryCacheTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, new Pair(key, bitmap));
-//		}
-//		synchronized (mDiskCacheLock) {
-			if (mImageDiskCache != null && mImageDiskCache.get(key) == null) {
-				mImageDiskCache.put(key, bitmap.getBitmap());
-			}
-//		}
+	public void addBitmapToCache(String key, BitmapDrawable bitmap) throws Exception {
+		if (mImageDiskCache != null && mImageDiskCache.get(key) == null) {
+			mImageDiskCache.put(key, bitmap.getBitmap());
+		}
 	}
 
-	public Bitmap getBitmapFromCache(String key) throws FileSystemException {
+	public Bitmap getBitmapFromCache(String key) throws Exception {
 		BitmapDrawable bitmap = getBitmapFromMemCache(key);
 		if(bitmap != null)
 			return bitmap.getBitmap();
@@ -113,17 +97,10 @@ public class ImageCache {
 		return mMemoryCache.get(key);
 	}
 
-	private Bitmap getBitmapFromDiskCache(String key) throws FileSystemException {
-//		synchronized (mDiskCacheLock) {
-//			while (mDiskCacheStarting) {
-//				try {
-//					mDiskCacheLock.wait();
-//				} catch (InterruptedException e) {}
-//			}
-			if (mImageDiskCache != null) {
-				return mImageDiskCache.get(key);
-			}
-//		}
+	private Bitmap getBitmapFromDiskCache(String key) throws Exception {
+		if (mImageDiskCache != null) {
+			return mImageDiskCache.get(key);
+		}
 		return null;
 	}
 }

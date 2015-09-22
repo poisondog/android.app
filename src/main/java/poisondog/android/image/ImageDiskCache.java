@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 Google Inc.
- * Copyright (C) 2013 Adam Huang
+ * Copyright (C) 2013 Adam Huang <poisondog@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,41 +18,47 @@ package poisondog.android.image;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import java.security.MessageDigest;
-import java.io.OutputStream;
 import java.io.IOException;
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.VFS;
-import org.apache.commons.vfs2.FileSystemException;
+import java.io.OutputStream;
 import poisondog.commons.HashFunction;
+import poisondog.net.URLUtils;
+import poisondog.vfs.FileFactory;
+import poisondog.vfs.IData;
+import poisondog.vfs.IFile;
+import poisondog.vfs.IFolder;
 /**
  * @author poisondog <poisondog@gmail.com>
  */
 public class ImageDiskCache {
 	private static final String MESSAGE_DIGEST_ALGORITHM = "MD5";
 	private static ImageDiskCache instance;
-	private FileObject cache;
-	
-	private ImageDiskCache(FileObject file) {
-		this.cache = file;
+	private IFolder mCache;
+
+	private ImageDiskCache(IFolder folder) {
+		mCache = folder;
 	}
 
-	public synchronized static ImageDiskCache open(FileObject file, int size) {
+	public synchronized static ImageDiskCache open(String folder, int size) throws Exception {
 		if(instance != null)
 			return instance;
-		instance = new ImageDiskCache(file);
+		IFile file = FileFactory.getFile(folder);
+		if (!(file instanceof IFolder))
+			throw new IllegalArgumentException("this input need folder");
+		instance = new ImageDiskCache((IFolder)file);
 		return instance;
 	}
 
-	public synchronized Bitmap get(String key) throws FileSystemException {
-		FileObject file = VFS.getManager().resolveFile(cache + "/" + HashFunction.md5(key));
-		Bitmap result = BitmapFactory.decodeFile(file.getURL().getPath(), new BitmapFactory.Options());
-		return result;
+	private synchronized String getPath(String key) throws Exception {
+		return URLUtils.path(mCache.getUrl() + HashFunction.md5(key));
 	}
 
-	public synchronized void put(String key, Bitmap value) throws FileSystemException, IOException {
-		FileObject file = VFS.getManager().resolveFile(cache + "/" + HashFunction.md5(key));
-		OutputStream output = file.getContent().getOutputStream();
+	public synchronized Bitmap get(String key) throws Exception {
+		return BitmapFactory.decodeFile(getPath(key), new BitmapFactory.Options());
+	}
+
+	public synchronized void put(String key, Bitmap value) throws IOException, Exception {
+		IData data = (IData)FileFactory.getFile(getPath(key));
+		OutputStream output = data.getOutputStream();
 		value.compress(Bitmap.CompressFormat.JPEG, 90, output);
 		output.close();
 	}
