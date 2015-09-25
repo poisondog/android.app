@@ -21,10 +21,15 @@ import poisondog.core.Mission;
  */
 public class AsyncMissionTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
 	private Mission<Params> mMission;
-	private Exception mException;
+	private Mission<Result> mHandler;
 
 	public AsyncMissionTask(Mission<Params> mission) {
+		this(mission, null);
+	}
+
+	public AsyncMissionTask(Mission<Params> mission, Mission<Result> handler) {
 		mMission = mission;
+		mHandler = handler;
 	}
 
 	@Override
@@ -35,8 +40,19 @@ public class AsyncMissionTask<Params, Progress, Result> extends AsyncTask<Params
 		try {
 			result = (Result) mMission.execute(params[0]);
 		} catch(Exception e) {
-			mException = e;
+			e.printStackTrace();
 		}
 		return result;
+	}
+
+	@Override
+	protected void onPostExecute(Result result) {
+		if (mHandler == null)
+			return;
+		try {
+			mHandler.execute(result);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
