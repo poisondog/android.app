@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import poisondog.android.app.DebugFragment;
 import poisondog.android.app.R;
+import poisondog.android.listener.RefreshNothing;
+import poisondog.android.listener.RefreshOnTop;
 import poisondog.android.view.PictureWall;
 /**
  * @author poisondog <poisondog@gmail.com>

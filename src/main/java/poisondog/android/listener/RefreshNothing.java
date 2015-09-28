@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package poisondog.android.fragment;
+package poisondog.android.listener;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 /**
