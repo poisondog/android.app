@@ -61,10 +61,7 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 		super();
 		mActivity = activity;
 		mWidthCalculator = new GetDisplayWidth();
-//		try{
-			mFetcher = new ImageFetcher(activity, 96, 96, cacheFolder);
-//		}catch(Exception e) {
-//		}
+		mFetcher = new ImageFetcher(activity, 96, 96, cacheFolder);
 		mFetcher.setImageCache(new ImageCache(activity, cacheFolder));
 
 		mGroupNames = new ArrayList<String>(files.keySet());
