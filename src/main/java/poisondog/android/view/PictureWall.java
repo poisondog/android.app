@@ -17,27 +17,13 @@ package poisondog.android.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.AdapterView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
 public class PictureWall extends StickyListHeadersListView {
-//	private View.OnClickListener mClickListener;
 
 	public PictureWall(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
-
-//	private void setClickListener(View.OnClickListener listener) {
-//		mClickListener = listener;
-//		setOnItemClickListener(new TempItemClickListener());
-//	}
 }
-//class TempItemClickListener implements AdapterView.OnItemClickListener {
-//	@Override
-//	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		System.out.println("PictureWall: " + view);
-//	}
-//}
