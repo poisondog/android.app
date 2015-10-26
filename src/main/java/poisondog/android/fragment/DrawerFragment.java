@@ -61,4 +61,12 @@ public class DrawerFragment extends Fragment {
 		if (mDrawerList != null)
 			mDrawerList.setOnItemClickListener(listener);
 	}
+
+	public DrawerLayout getDrawerLayout() {
+		return mDrawerLayout;
+	}
+
+	public ListView getDrawerList() {
+		return mDrawerList;
+	}
 }
