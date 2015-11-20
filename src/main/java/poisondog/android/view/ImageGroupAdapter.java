@@ -156,7 +156,7 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 				layout.setPadding(0,0,0,padding);
 			else
 				layout.setPadding(0,0,padding,padding);
-			ImageView image = (ImageView) layout.findViewById(R.id.image_item);
+			View image = (View) layout.findViewById(R.id.image_item);
 			int width = (int)((getDisplayWidth()-padding*(list.getChildCount()-1))/list.getChildCount());
 			ViewGroup.LayoutParams params = image.getLayoutParams();
 			params.height = width;
@@ -198,6 +198,8 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 			image.setLongClickable(true);
 //			image.setOnLongClickListener(mItemLongClickListener);
 
+			if (mMultiSelector!= null && mMultiSelector.contains(image.getInfo()))
+				image.focuse();
 			mFetcher.loadThumbnail(image);
 		}
 		adjustImageRowWidth(list);

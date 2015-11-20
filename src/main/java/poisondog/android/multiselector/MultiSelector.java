@@ -69,4 +69,8 @@ public class MultiSelector {
 	public State getState() {
 		return mState;
 	}
+
+	public boolean contains(String id) {
+		return mSelected.contains(id);
+	}
 }

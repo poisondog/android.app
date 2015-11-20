@@ -18,6 +18,7 @@ package poisondog.android.multiselector;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import poisondog.core.HideInfo;
+import poisondog.android.view.Focusable;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
@@ -29,7 +30,7 @@ public class MarkSelected implements View.OnClickListener, View.OnLongClickListe
 		mMultiSelector = selector;
 		mClickListener = new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(View view) {
 			}
 		};
 	}
@@ -39,29 +40,39 @@ public class MarkSelected implements View.OnClickListener, View.OnLongClickListe
 	}
 
 	@Override
-	public void onClick(View v) {
-		if (!(v instanceof HideInfo))
+	public void onClick(View view) {
+		if (!(view instanceof HideInfo))
 			throw new IllegalArgumentException("this listener only handle class implements HideInfo");
 		if (mMultiSelector == null || mMultiSelector.getState() != MultiSelector.State.CREATE_ACTION_MODE) {
-			mClickListener.onClick(v);
+			mClickListener.onClick(view);
 			return;
 		}
-		HideInfo info = (HideInfo)v;
+		HideInfo info = (HideInfo)view;
 		mMultiSelector.toggleSelected(info.getInfo());
+
+		if (view instanceof Focusable) {
+			Focusable f = (Focusable)view;
+			f.toggleFocuse();
+		}
 	}
 
 	@Override
-	public boolean onLongClick(View v) {
-		if (!(v.getContext() instanceof AppCompatActivity))
+	public boolean onLongClick(View view) {
+		if (!(view.getContext() instanceof AppCompatActivity))
 			throw new IllegalArgumentException("the Context isn't AppCompatActivity");
-		if (!(v instanceof HideInfo))
+		if (!(view instanceof HideInfo))
 			throw new IllegalArgumentException("the View isn't HideInfo");
 
 		if (mMultiSelector == null)
 			return false;
-		mMultiSelector.startActionMode((AppCompatActivity)v.getContext());
-		HideInfo info = (HideInfo)v;
+		mMultiSelector.startActionMode((AppCompatActivity)view.getContext());
+		HideInfo info = (HideInfo)view;
 		mMultiSelector.markSelected(info.getInfo());
+
+		if (view instanceof Focusable) {
+			Focusable f = (Focusable)view;
+			f.focuse();
+		}
 		return true;
 	}
 }

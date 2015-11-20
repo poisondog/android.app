@@ -18,16 +18,48 @@ package poisondog.android.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.graphics.Color;
 import poisondog.core.HideInfo;
+import android.widget.FrameLayout;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
-public class PhotoView extends ImageView implements HideInfo {
+public class PhotoView extends FrameLayout implements HideInfo, Focusable {
+	private ImageView mImageView;
+	private ImageView mFocuseView;
 	private String mImage;
 	private String mThumbnail;
+	private boolean mFocusing;
 
 	public PhotoView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		mImageView = new ImageView(context);
+		addView(mImageView);
+
+		mFocuseView = new ImageView(context);
+		mFocuseView.setBackgroundColor(Color.BLUE);
+		mFocuseView.setAlpha((float)0.5);
+	}
+
+	@Override
+	public void focuse() {
+		mFocusing = true;
+		mFocuseView.setLayoutParams(mImageView.getLayoutParams());
+		addView(mFocuseView);
+	}
+
+	@Override
+	public void unfocuse() {
+		removeView(mFocuseView);
+		mFocusing = false;
+	}
+
+	@Override
+	public void toggleFocuse() {
+		if (mFocusing)
+			unfocuse();
+		else
+			focuse();
 	}
 
 	public void setImageUrl(String url) {
@@ -36,6 +68,10 @@ public class PhotoView extends ImageView implements HideInfo {
 
 	public String getImageUrl() {
 		return mImage;
+	}
+
+	public ImageView getImageView() {
+		return mImageView;
 	}
 
 	public void setThumbnailUrl(String url) {

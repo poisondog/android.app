@@ -43,11 +43,11 @@ public abstract class ImageTask {
 	protected abstract Bitmap processBitmap(Object data);
 
 	public void loadImage(PhotoView view) {
-		loadImage(view.getImageUrl(), view);
+		loadImage(view.getImageUrl(), view.getImageView());
 	}
 
 	public void loadThumbnail(PhotoView view) {
-		loadImage(view.getThumbnailUrl(), view);
+		loadImage(view.getThumbnailUrl(), view.getImageView());
 	}
 
 	public void loadImage(Object data, ImageView imageView) {
