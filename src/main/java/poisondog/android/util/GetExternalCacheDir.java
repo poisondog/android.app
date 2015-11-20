@@ -24,6 +24,8 @@ public class GetExternalCacheDir implements Mission<Context> {
 
 	@Override
 	public String execute(Context context) {
+		if (context == null)
+			throw new IllegalArgumentException("the input context is null.");
 		return context.getExternalCacheDir().getPath() + "/";
 	}
 }

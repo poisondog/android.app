@@ -18,10 +18,11 @@ package poisondog.android.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import poisondog.core.HideInfo;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
-public class PhotoView extends ImageView {
+public class PhotoView extends ImageView implements HideInfo {
 	private String mImage;
 	private String mThumbnail;
 
@@ -43,6 +44,16 @@ public class PhotoView extends ImageView {
 
 	public String getThumbnailUrl() {
 		return mThumbnail;
+	}
+
+	@Override
+	public void setInfo(String info) {
+		mImage = info;
+	}
+
+	@Override
+	public String getInfo() {
+		return mImage;
 	}
 
 	@Override

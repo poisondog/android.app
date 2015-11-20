@@ -27,5 +27,9 @@ dependencies {
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'org.apache.commons:commons-vfs2:2.0'
 	compile 'se.emilsjolander:stickylistheaders:2.7.0'
+	compile 'com.github.manuelpeinado.multichoiceadapter:multichoiceadapter:3.0.0'
+	compile 'com.bignerdranch.android:recyclerview-multiselect:+'
+	compile 'com.android.support:recyclerview-v7:+'
+	compile 'com.timehop.stickyheadersrecyclerview:library:0.4.2@aar'
 	compile project(':poisondog.commons')
 }

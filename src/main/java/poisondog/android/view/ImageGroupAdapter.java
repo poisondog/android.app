@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.support.v7.app.AppCompatActivity;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -31,15 +33,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.vfs2.FileObject;
 import poisondog.android.app.R;
+import android.support.v7.view.ActionMode;
 import poisondog.android.image.ImageCache;
 import poisondog.android.image.ImageFetcher;
 import poisondog.android.util.GetDisplayWidth;
+import poisondog.android.util.GetExternalCacheDir;
 import poisondog.android.view.PhotoView;
 import poisondog.core.HideInfo;
 import poisondog.core.Mission;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import poisondog.android.multiselector.MultiSelector;
+import poisondog.android.multiselector.MarkSelected;
+import com.bignerdranch.android.multiselector.SwappingHolder;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
@@ -52,17 +58,22 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 	private List<LinearLayout> mRowLayouts;
 	private int mPosition;
 	private List<Integer> mSectionIndices;
-	private View.OnClickListener mItemListener;
+	private View.OnClickListener mItemClickListener;
+//	private View.OnLongClickListener mItemLongClickListener;
 	private Mission<HideInfo> mImageUrlFactory;
 	private Mission<HideInfo> mThumbnailUrlFactory;
 	private Mission<Activity> mWidthCalculator;
+	private MultiSelector mMultiSelector;
 
-	public ImageGroupAdapter(Activity activity, Map<String, List<HideInfo>> files, String cacheFolder) throws Exception {
+	public ImageGroupAdapter(Activity activity, Map<String, List<HideInfo>> files) throws Exception {
 		super();
 		mActivity = activity;
 		mWidthCalculator = new GetDisplayWidth();
-		mFetcher = new ImageFetcher(activity, 96, 96, cacheFolder);
-		mFetcher.setImageCache(new ImageCache(activity, cacheFolder));
+
+		GetExternalCacheDir task = new GetExternalCacheDir();
+		String cachePath = task.execute(activity);
+		mFetcher = new ImageFetcher(activity, 96, 96, cachePath);
+		mFetcher.setImageCache(new ImageCache(activity, cachePath));
 
 		mGroupNames = new ArrayList<String>(files.keySet());
 		mItemRows = convertViews(files);
@@ -140,7 +151,7 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 	private void adjustImageRowWidth(LinearLayout list) {
 		for (int i = 0; i < list.getChildCount(); i++) {
 			int padding = 5;
-			FrameLayout layout = (FrameLayout) list.getChildAt(i);
+			View layout = (View) list.getChildAt(i);
 			if(i == list.getChildCount()-1)
 				layout.setPadding(0,0,0,padding);
 			else
@@ -158,16 +169,16 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 		list.setOrientation(LinearLayout.HORIZONTAL);
 
 		for (int i = 0; i < ROW_COUNT; i++) {
-			list.addView(createImageItem());
-		}
-		adjustImageRowWidth(list);
+			View layout = createImageItem();
+			list.addView(layout);
 
-		for (int i = 0; i < photos.size(); i++) {
-			HideInfo item = photos.get(i);
-			FrameLayout layout = (FrameLayout) list.getChildAt(i);
+			if (i >= photos.size())
+				continue;
+
 			ProgressBar progress = (ProgressBar) layout.findViewById(R.id.circle_progress_item);
 			progress.setVisibility(View.VISIBLE);
 			
+			HideInfo item = photos.get(i);
 			PhotoView image = (PhotoView) layout.findViewById(R.id.image_item);
 			String url = "";
 			String thumbnail = "";
@@ -177,16 +188,28 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 			}catch(Exception e) {
 			}
 
+			MarkSelected mark = new MarkSelected(mMultiSelector);
+			mark.setClickListener(mItemClickListener);
+
 			image.setImageUrl(url);
 			image.setThumbnailUrl(thumbnail);
-			image.setOnClickListener(mItemListener);
+			image.setOnClickListener(mark);
+			image.setOnLongClickListener(mark);
+			image.setLongClickable(true);
+//			image.setOnLongClickListener(mItemLongClickListener);
 
 			mFetcher.loadThumbnail(image);
 		}
+		adjustImageRowWidth(list);
+
 		if(mRowLayouts.size() > mPosition)
 			mRowLayouts.remove(mPosition);
 		mRowLayouts.add(mPosition, list);
 		return list;
+	}
+
+	public void setMultiSelector(MultiSelector selector) {
+		mMultiSelector = selector;
 	}
 
 	public void setImageUrlFactory(Mission<HideInfo> factory) {
@@ -198,8 +221,12 @@ public class ImageGroupAdapter extends BaseAdapter implements SectionIndexer, St
 	}
 
 	public void setItemClickListener(View.OnClickListener listener) {
-		mItemListener = listener;
+		mItemClickListener = listener;
 	}
+
+//	public void setItemLongClickListener(View.OnLongClickListener listener) {
+//		mItemLongClickListener = listener;
+//	}
 
 	private View createImageItem() {
 		LayoutInflater inflater = LayoutInflater.from(mActivity);
