@@ -17,14 +17,17 @@ package poisondog.android.multiselector;
 
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
+import android.widget.BaseAdapter;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
 public abstract class MultiSelectActionMode implements ActionMode.Callback {
 	private MultiSelector mMultiSelector;
+	private BaseAdapter mAdapter;
 
-	public MultiSelectActionMode(MultiSelector selector) {
+	public MultiSelectActionMode(MultiSelector selector, BaseAdapter adapter) {
 		mMultiSelector = selector;
+		mAdapter = adapter;
 	}
 
 	@Override
@@ -42,5 +45,6 @@ public abstract class MultiSelectActionMode implements ActionMode.Callback {
 	public void onDestroyActionMode(ActionMode mode) {
 		mMultiSelector.clearSelections();
 		mMultiSelector.setState(MultiSelector.State.DESTROY_ACTION_MODE);
+		mAdapter.notifyDataSetChanged();
 	}
 }

@@ -16,11 +16,11 @@
 package poisondog.android.view;
 
 import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.graphics.Color;
-import poisondog.core.HideInfo;
+import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import poisondog.core.HideInfo;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */

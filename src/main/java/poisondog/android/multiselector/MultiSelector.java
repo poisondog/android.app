@@ -15,11 +15,11 @@
  */
 package poisondog.android.multiselector;
 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Collection;
-import android.support.v7.view.ActionMode;
-import android.support.v7.app.AppCompatActivity;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */

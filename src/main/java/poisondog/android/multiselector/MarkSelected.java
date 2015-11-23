@@ -17,8 +17,8 @@ package poisondog.android.multiselector;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import poisondog.core.HideInfo;
 import poisondog.android.view.Focusable;
+import poisondog.core.HideInfo;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
