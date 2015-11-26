@@ -81,6 +81,12 @@ public class ProgressHandler extends BroadcastReceiver implements PostHandler, M
 		return handler;
 	}
 
+	public static ProgressHandler showHorizontal(Context context, String title, String message) {
+		ProgressHandler handler = new ProgressHandler(context, title, message, null, "");
+		handler.show();
+		return handler;
+	}
+
 	public static ProgressHandler showHorizontal(Context context, String title, String message, Cancellable task, String cancelText) {
 		ProgressHandler handler = new ProgressHandler(context, title, message, task, cancelText);
 		handler.show();
