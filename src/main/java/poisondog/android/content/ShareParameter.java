@@ -54,8 +54,10 @@ public class ShareParameter {
 		return mSubject;
 	}
 
-	public String getText() {
-		return mText;
+	public ArrayList<String> getText() {
+		ArrayList<String> result = new ArrayList<String>();
+		result.add(mText);
+		return result;
 	}
 
 	public String getType() {

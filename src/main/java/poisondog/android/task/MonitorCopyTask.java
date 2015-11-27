@@ -24,11 +24,11 @@ import poisondog.vfs.IData;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
-public class CreateMonitorCopyTask implements Mission<Context> {
+public class MonitorCopyTask implements Mission<Context> {
 	private String mFrom;
 	private String mTo;
 
-	public CreateMonitorCopyTask(String from, String to) {
+	public MonitorCopyTask(String from, String to) {
 		mFrom = from;
 		mTo = to;
 	}
