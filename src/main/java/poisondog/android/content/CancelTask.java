@@ -29,11 +29,13 @@ public class CancelTask implements DialogInterface.OnCancelListener, DialogInter
 
 	@Override
 	public void onCancel(DialogInterface dialog) {
-		mTask.cancel(false);
+		if (mTask != null)
+			mTask.cancel(false);
 	}
 
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-		mTask.cancel(false);
+		if (mTask != null)
+			mTask.cancel(false);
 	}
 }
