@@ -26,7 +26,8 @@ import java.util.Set;
 public class MultiSelector {
 	public enum State {CREATE_ACTION_MODE, DESTROY_ACTION_MODE}
 	private Set<String> mSelected;
-	private ActionMode.Callback mActionMode;
+	private ActionMode mActionMode;
+	private ActionMode.Callback mCallback;
 	private State mState;
 
 	public MultiSelector() {
@@ -55,11 +56,11 @@ public class MultiSelector {
 
 	public void startActionMode(AppCompatActivity activity) {
 		if (mState == State.DESTROY_ACTION_MODE)
-			activity.startSupportActionMode(mActionMode);
+			mActionMode = activity.startSupportActionMode(mCallback);
 	}
 
-	public void setActionMode(ActionMode.Callback mode) {
-		mActionMode = mode;
+	public void setActionModeCallback(ActionMode.Callback callback) {
+		mCallback = callback;
 	}
 
 	public void setState(State state) {
@@ -68,6 +69,10 @@ public class MultiSelector {
 
 	public State getState() {
 		return mState;
+	}
+
+	public ActionMode getActionMode() {
+		return mActionMode;
 	}
 
 	public boolean contains(String id) {
