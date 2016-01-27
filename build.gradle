@@ -32,4 +32,6 @@ dependencies {
 	compile 'com.android.support:recyclerview-v7:+'
 	compile 'com.timehop.stickyheadersrecyclerview:library:0.4.2@aar'
 	compile project(':poisondog.commons')
+	testCompile "org.robolectric:robolectric:3.0"
+	testCompile "org.assertj:assertj-core:1.7.0"
 }
