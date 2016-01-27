@@ -27,7 +27,7 @@ import org.robolectric.RuntimeEnvironment;
 public class LoadAndroidIPTest {
 
 	@Test
-	public void testExecute() {
+	public void testExecute() throws Exception {
 		Assert.assertEquals("0.0.0.0", new LoadAndroidIP().execute(RuntimeEnvironment.application));
 	}
 }
