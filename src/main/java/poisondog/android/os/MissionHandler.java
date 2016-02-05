@@ -16,6 +16,7 @@
 package poisondog.android.os;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import poisondog.core.Mission;
 /**
@@ -25,6 +26,12 @@ public class MissionHandler extends Handler {
 	private Mission<Message> mMission;
 
 	public MissionHandler(Mission<Message> mission) {
+		super(Looper.getMainLooper());
+		mMission = mission;
+	}
+
+	public MissionHandler(Looper looper, Mission<Message> mission) {
+		super(looper);
 		mMission = mission;
 	}
 
