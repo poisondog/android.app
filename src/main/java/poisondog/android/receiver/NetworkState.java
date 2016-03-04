@@ -24,29 +24,48 @@ import android.net.wifi.WifiManager;
 import poisondog.android.log.AndroidLogger;
 import poisondog.log.Logger;
 import poisondog.log.LogLevel;
+import poisondog.core.NoMission;
+import poisondog.core.Mission;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
 public class NetworkState extends BroadcastReceiver {
 	private Logger mLogger;
+	private Mission<NetworkInfo> mNetworkHandler;
+	private Mission<WifiManager> mWifiHandler;
 
 	public NetworkState() {
 		mLogger = new AndroidLogger(getClass().getSimpleName());
+		mNetworkHandler = new NoMission();
+		mWifiHandler = new NoMission();
 	}
 
 	public void setLogger(Logger logger) {
 		mLogger = logger;
 	}
 
-	@Override
-	public void onReceive(final Context context, Intent intent) {
-		NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-		mLogger.log(LogLevel.TRACE, "Network Type: " + info.getType());
-		mLogger.log(LogLevel.TRACE, "Network State: " + info.getState());
-
-		WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-		mLogger.log(LogLevel.TRACE, "WiFi SSID: " + wifiMgr.getConnectionInfo().getSSID());
-		mLogger.log(LogLevel.TRACE, "WiFi Mac Address: " + wifiMgr.getConnectionInfo().getMacAddress());
+	public void setNetworkHandler(Mission<NetworkInfo> handler) {
+		mNetworkHandler = handler;
 	}
 
+	public void setWifiHandler(Mission<WifiManager> handler) {
+		mWifiHandler = handler;
+	}
+
+	@Override
+	public void onReceive(final Context context, Intent intent) {
+		try {
+			NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+			mLogger.log(LogLevel.TRACE, "Network Type: " + info.getType());
+			mLogger.log(LogLevel.TRACE, "Network State: " + info.getState());
+			mLogger.log(LogLevel.TRACE, "Execute Handler: " + mNetworkHandler.execute(info));
+
+			WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			mLogger.log(LogLevel.TRACE, "WiFi SSID: " + wifiMgr.getConnectionInfo().getSSID());
+			mLogger.log(LogLevel.TRACE, "WiFi Mac Address: " + wifiMgr.getConnectionInfo().getMacAddress());
+			mLogger.log(LogLevel.TRACE, "Execute Handler: " + mWifiHandler.execute(wifiMgr));
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
