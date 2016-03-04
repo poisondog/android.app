@@ -16,13 +16,17 @@
 package poisondog.android.content;
 
 import org.junit.Assert;
+import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 /**
  * @author Adam Huang <poisondog@gmail.com>
  * @since 2016-03-04
  */
+@RunWith(RobolectricTestRunner.class)
 public class LoadAndroidIPTest {
 
 	@Before
@@ -30,7 +34,7 @@ public class LoadAndroidIPTest {
 	}
 
 	@Test
-	public void testApp() throws Exception {
-		Assert.assertTrue(true);
+	public void testExecute() throws Exception {
+		Assert.assertEquals("0.0.0.0", new LoadAndroidIP().execute(RuntimeEnvironment.application));
 	}
 }
