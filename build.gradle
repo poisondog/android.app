@@ -25,7 +25,7 @@ android {
 dependencies {
 //	compile 'com.android.support:appcompat-v7:21.0.+'
 //	compile 'com.android.support:recyclerview-v7:+'
-	compile 'com.bignerdranch.android:recyclerview-multiselect:+'
+	compile 'com.bignerdranch.android:recyclerview-multiselect:0.2'
 //	compile 'com.github.manuelpeinado.multichoiceadapter:multichoiceadapter:3.0.0'
 	compile 'com.timehop.stickyheadersrecyclerview:library:0.4.2@aar'
 //	compile 'commons-lang:commons-lang:2.6'
