@@ -17,8 +17,9 @@ package poisondog.android.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import java.util.HashMap;
+import java.util.Map;
 import poisondog.android.log.AndroidLogger;
-import poisondog.commons.Config;
 import poisondog.core.Mission;
 import poisondog.log.Logger;
 import poisondog.log.LogLevel;
@@ -44,12 +45,12 @@ public class LoadSharedPreferences implements Mission<String> {
 	}
 
 	@Override
-	public Config execute(String none) {
+	public Map<String, String> execute(String none) {
 		mLogger.log(LogLevel.TRACE, "execute: " + mPropertiesFileName);
 		SharedPreferences settings = mContext.getSharedPreferences(mPropertiesFileName, mMode);
-		Config result = new Config();
+		Map<String, String> result = new HashMap<String, String>();
 		for (String key : result.keySet()) {
-			result.set(key, settings.getString(key, result.get(key)));
+			result.put(key, settings.getString(key, result.get(key)));
 		}
 		return result;
 	}

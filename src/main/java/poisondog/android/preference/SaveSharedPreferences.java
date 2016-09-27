@@ -17,15 +17,15 @@ package poisondog.android.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import java.util.Map;
 import poisondog.android.log.AndroidLogger;
-import poisondog.commons.Config;
 import poisondog.core.Mission;
 import poisondog.log.Logger;
 import poisondog.log.LogLevel;
 /**
  * @author Adam Huang <poisondog@gmail.com>
  */
-public class SaveSharedPreferences implements Mission<Config> {
+public class SaveSharedPreferences implements Mission<Map<String, String>> {
 	private Logger mLogger;
 	private Context mContext;
 	private int mMode;
@@ -44,7 +44,7 @@ public class SaveSharedPreferences implements Mission<Config> {
 	}
 
 	@Override
-	public Config execute(Config setting) {
+	public Map<String, String> execute(Map<String, String> setting) {
 		mLogger.log(LogLevel.TRACE, "execute: " + setting);
 		SharedPreferences settings = mContext.getSharedPreferences(mPropertiesFileName, mMode);
 		for (String key : setting.keySet()) {
