@@ -17,10 +17,11 @@ package poisondog.android.os;
 
 import java.util.ArrayList;
 import java.util.List;
+import poisondog.core.Mission;
 /**
  * @author poisondog <poisondog@gmail.com>
  */
-public class OrderPostHandler implements PostHandler {
+public class OrderPostHandler implements PostHandler, Mission<Object> {
 	private List<PostHandler> mHandlers;
 
 	public OrderPostHandler() {
@@ -32,9 +33,15 @@ public class OrderPostHandler implements PostHandler {
 	}
 
 	@Override
-	public void postExecute(Object result) {
+	public Object execute(Object result) {
 		for (PostHandler handler : mHandlers) {
 			handler.postExecute(result);
 		}
+		return result;
+	}
+
+	@Override
+	public void postExecute(Object result) {
+		execute(result);
 	}
 }
