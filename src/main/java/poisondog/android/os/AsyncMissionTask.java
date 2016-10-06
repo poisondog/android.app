@@ -51,6 +51,10 @@ public class AsyncMissionTask<Params, Progress, Result> extends AsyncTask<Params
 		mCancel = new NoMission<Params>();
 	}
 
+	public void setCancelMission(Mission<Params> mission) {
+		mCancel = mission;
+	}
+
 	@Override
 	protected Result doInBackground(Params... params) {
 		if (params.length > 1)
