@@ -45,9 +45,10 @@ public class SaveSharedPreferences implements Mission<Map<String, String>> {
 
 	@Override
 	public Map<String, String> execute(Map<String, String> setting) {
-		mLogger.log(LogLevel.TRACE, "execute: " + setting);
+		mLogger.log(LogLevel.TRACE, "execute: " + mPropertiesFileName);
 		SharedPreferences settings = mContext.getSharedPreferences(mPropertiesFileName, mMode);
 		for (String key : setting.keySet()) {
+			mLogger.log(LogLevel.TRACE, key + ": " + setting.get(key));
 			settings.edit().putString(key, setting.get(key)).commit();
 		}
 		return setting;

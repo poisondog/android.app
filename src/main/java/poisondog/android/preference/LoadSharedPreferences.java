@@ -49,8 +49,9 @@ public class LoadSharedPreferences implements Mission<String> {
 		mLogger.log(LogLevel.TRACE, "execute: " + mPropertiesFileName);
 		SharedPreferences settings = mContext.getSharedPreferences(mPropertiesFileName, mMode);
 		Map<String, String> result = new HashMap<String, String>();
-		for (String key : result.keySet()) {
-			result.put(key, settings.getString(key, result.get(key)));
+		for (String key : settings.getAll().keySet()) {
+			mLogger.log(LogLevel.TRACE, key + ": " + settings.getString(key, ""));
+			result.put(key, settings.getString(key, ""));
 		}
 		return result;
 	}
