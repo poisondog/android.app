@@ -54,6 +54,10 @@ public class BundleFactory implements Mission<Object> {
 		mResult.putBoolean(key, value);
 	}
 
+	public void putFloat(String key, float value) {
+		mResult.putFloat(key, value);
+	}
+
 	@Override
 	public Bundle execute(Object none) {
 		Bundle result = mResult;
