@@ -38,17 +38,4 @@ dependencies {
 	testCompile 'org.mockito:mockito-all:1.9.5'
 }
 
-def username
-def password
-task print << {
-	def console = System.console()
-		if (console) {
-			username = console.readLine('> Please enter your username: ')
-			password = console.readPassword('> Please enter your password: ')
-		} else {
-			logger.error "Cannot get console."
-		}
-	println "Hello $username! Your password is ${password.size()} characters."
-}
-
 apply from: 'repositories.gradle'

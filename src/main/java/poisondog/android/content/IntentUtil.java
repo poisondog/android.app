@@ -19,16 +19,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import java.io.Serializable;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.io.File;
-import poisondog.android.content.MoveActivity;
-import poisondog.android.content.MoveActivityForResult;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import poisondog.android.content.MoveActivity;
+import poisondog.android.content.MoveActivityForResult;
 /**
  * @author poisondog <poisondog@gmail.com>
  */
@@ -106,15 +106,15 @@ public class IntentUtil {
 		return null;
 	}
 
-	public static Bundle createBundle() {
+	private static Bundle createBundle() {
 		return new Bundle();
 	}
 
-	public static Bundle putString(Bundle bundle, String value) {
+	private static Bundle putString(Bundle bundle, String value) {
 		return putString(bundle, KEY_STRING, value);
 	}
 
-	public static Bundle putString(Bundle bundle, String key, String value) {
+	private static Bundle putString(Bundle bundle, String key, String value) {
 		bundle.putString(key, value);
 		return bundle;
 	}

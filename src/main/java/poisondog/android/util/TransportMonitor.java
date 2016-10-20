@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import poisondog.android.content.BundleFactory;
 import poisondog.android.content.IntentUtil;
 import poisondog.io.Accumulation;
 /**
@@ -32,12 +33,14 @@ public class TransportMonitor extends Accumulation {
 	private Context mContext;
 	private String mFromUrl;
 	private long mMax;
+	private BundleFactory mFactory;
 
 	public TransportMonitor(Context context, String fromUrl) {
 		mContext = context;
 		mFromUrl = fromUrl;
 		mMax = 100;
 		onStep(0);
+		mFactory = new BundleFactory();
 	}
 
 	public void setMax(long max) {
@@ -50,11 +53,15 @@ public class TransportMonitor extends Accumulation {
 	}
 
 	private void updateProgress(String fromUrl, long current, long max) {
-		Bundle bundle = IntentUtil.createBundle();
-		bundle = IntentUtil.putString(bundle, FROM, fromUrl);
-		bundle = IntentUtil.putLong(bundle, CURRENT, current);
-		bundle = IntentUtil.putLong(bundle, MAX, max);
-		Intent localIntent = new Intent(PROGRESS).putExtras(bundle);
+		mFactory.putString(FROM, fromUrl);
+		mFactory.putLong(CURRENT, current);
+		mFactory.putLong(MAX, max);
+
+//		Bundle bundle = IntentUtil.createBundle();
+//		bundle = IntentUtil.putString(bundle, FROM, fromUrl);
+//		bundle = IntentUtil.putLong(bundle, CURRENT, current);
+//		bundle = IntentUtil.putLong(bundle, MAX, max);
+		Intent localIntent = new Intent(PROGRESS).putExtras(mFactory.execute(null));
 		LocalBroadcastManager.getInstance(mContext).sendBroadcast(localIntent);
 	}
 }
