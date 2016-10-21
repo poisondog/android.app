@@ -33,14 +33,12 @@ public class TransportMonitor extends Accumulation {
 	private Context mContext;
 	private String mFromUrl;
 	private long mMax;
-	private BundleFactory mFactory;
 
 	public TransportMonitor(Context context, String fromUrl) {
 		mContext = context;
 		mFromUrl = fromUrl;
 		mMax = 100;
 		onStep(0);
-		mFactory = new BundleFactory();
 	}
 
 	public void setMax(long max) {
@@ -53,15 +51,16 @@ public class TransportMonitor extends Accumulation {
 	}
 
 	private void updateProgress(String fromUrl, long current, long max) {
-		mFactory.putString(FROM, fromUrl);
-		mFactory.putLong(CURRENT, current);
-		mFactory.putLong(MAX, max);
+		BundleFactory factory = new BundleFactory();
+		factory.putString(FROM, fromUrl);
+		factory.putLong(CURRENT, current);
+		factory.putLong(MAX, max);
 
 //		Bundle bundle = IntentUtil.createBundle();
 //		bundle = IntentUtil.putString(bundle, FROM, fromUrl);
 //		bundle = IntentUtil.putLong(bundle, CURRENT, current);
 //		bundle = IntentUtil.putLong(bundle, MAX, max);
-		Intent localIntent = new Intent(PROGRESS).putExtras(mFactory.execute(null));
+		Intent localIntent = new Intent(PROGRESS).putExtras(factory.execute(null));
 		LocalBroadcastManager.getInstance(mContext).sendBroadcast(localIntent);
 	}
 }

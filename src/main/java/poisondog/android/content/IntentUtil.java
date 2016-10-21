@@ -61,7 +61,7 @@ public class IntentUtil {
 		moveWithBundle(from, to, putString(createBundle(), value));
 	}
 
-	public static void moveWithSerializable(Context from, Class to, Serializable value) {
+	private static void moveWithSerializable(Context from, Class to, Serializable value) {
 		moveWithBundle(from, to, putSerializable(createBundle(), value, from));
 	}
 
@@ -119,11 +119,11 @@ public class IntentUtil {
 		return bundle;
 	}
 
-	public static Bundle putStringList(Bundle bundle, List<String> value) {
+	private static Bundle putStringList(Bundle bundle, List<String> value) {
 		return putStringList(bundle, KEY_STRING_LIST, value);
 	}
 
-	public static Bundle putStringList(Bundle bundle, String key, List<String> value) {
+	private static Bundle putStringList(Bundle bundle, String key, List<String> value) {
 		bundle. putStringArrayList(key, new ArrayList<String>(value));
 		return bundle;
 	}
@@ -140,16 +140,16 @@ public class IntentUtil {
 		return putString(bundle, KEY_SERIALIZABLE, FILE_SERIALIZABLE);
 	}
 
-	public static Bundle putInt(Bundle bundle, int value) {
+	private static Bundle putInt(Bundle bundle, int value) {
 		return putInt(bundle, KEY_INT, value);
 	}
 
-	public static Bundle putInt(Bundle bundle, String key, int value) {
+	private static Bundle putInt(Bundle bundle, String key, int value) {
 		bundle.putInt(key, value);
 		return bundle;
 	}
 
-	public static Bundle putLong(Bundle bundle, String key, long value) {
+	private static Bundle putLong(Bundle bundle, String key, long value) {
 		bundle.putLong(key, value);
 		return bundle;
 	}
@@ -160,12 +160,12 @@ public class IntentUtil {
 		return bundle.getLong(key);
 	}
 
-	public static Bundle putBoolean(Bundle bundle, String key, boolean value) {
+	private static Bundle putBoolean(Bundle bundle, String key, boolean value) {
 		bundle.putBoolean(key, value);
 		return bundle;
 	}
 
-	public static Bundle putBoolean(Bundle bundle, boolean value) {
+	private static Bundle putBoolean(Bundle bundle, boolean value) {
 		return putBoolean(bundle, KEY_BOOLEAN, value);
 	}
 

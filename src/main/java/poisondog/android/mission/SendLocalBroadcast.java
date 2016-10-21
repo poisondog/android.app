@@ -25,20 +25,33 @@ import poisondog.core.Mission;
  * @author Adam Huang <poisondog@gmail.com>
  * @since 2016-10-20
  */
-public class SendBroadcast implements Mission<Bundle> {
+public class SendLocalBroadcast implements Mission<SendLocalBroadcast.Parameter> {
 	private Context mContext;
 
 	/**
 	 * Constructor
 	 */
-	public SendBroadcast(Context context) {
+	public SendLocalBroadcast(Context context) {
 		mContext = context;
 	}
 
 	@Override
-	public Bundle execute(Bundle bundle) {
-		Intent localIntent = new Intent(bundle.getString("id")).putExtras(bundle);
+	public SendLocalBroadcast.Parameter execute(SendLocalBroadcast.Parameter parameter) {
+		Intent localIntent = new Intent(parameter.mActionName);
+		localIntent.putExtras(parameter.mBundle);
 		LocalBroadcastManager.getInstance(mContext).sendBroadcast(localIntent);
-		return bundle;
+		return parameter;
+	}
+
+	public class Parameter {
+		private String mActionName;
+		private Bundle mBundle;
+		/**
+		 * Constructor
+		 */
+		public Parameter(String actionName, Bundle bundle) {
+			mActionName = actionName;
+			mBundle = bundle;
+		}
 	}
 }
