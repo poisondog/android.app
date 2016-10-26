@@ -14,7 +14,7 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 22
+	compileSdkVersion 24
 	buildToolsVersion "22.0.1"
 
 	lintOptions {
@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-//	compile 'com.android.support:appcompat-v7:21.0.+'
+	compile 'com.android.support:appcompat-v7:25.0.+'
 //	compile 'com.android.support:recyclerview-v7:+'
 	compile 'com.bignerdranch.android:recyclerview-multiselect:0.2'
 //	compile 'com.github.manuelpeinado.multichoiceadapter:multichoiceadapter:3.0.0'
