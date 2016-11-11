@@ -1,5 +1,5 @@
 project.group = 'poisondog'
-project.version = '1.0.0'
+project.version = '1.0.1'
 
 buildscript {
 	repositories {
@@ -20,6 +20,14 @@ android {
 	lintOptions {
 		abortOnError false
 	}
+
+//	buildTypes {
+//		release {
+//			minifyEnabled true
+//			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//		}
+//	}
+
 }
 
 dependencies {
