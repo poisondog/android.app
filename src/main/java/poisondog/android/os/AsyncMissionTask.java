@@ -63,7 +63,7 @@ public class AsyncMissionTask<Params, Progress, Result> extends AsyncTask<Params
 		try {
 			return (Result)mMission.execute(params[0]);
 		} catch(Exception e) {
-			e.printStackTrace();
+			cancel(true);
 		}
 		return null;
 	}
